@@ -48,20 +48,30 @@ class Text(Node):
         title="Content",
         description="The new field to hold the text content."
     )
+    marks: list[Mark] = []
     text: Optional[str] = Field(
         None,
         title="Text",
         description="(Deprecated) This field is deprecated and will be removed in a future version. "
                     "Use `content` instead."
     )
-    marks: list[Mark] = []
+    role: Optional[str] = Field(
+        None,
+        title="Node Type",
+        description="(Deprecated) This field is deprecated and will be removed in a future version. "
+                    "Use `category` instead."
+    )
 
     @model_validator(mode="before")
-    def handle_deprecated_text(self):
+    def handle_deprecations(self):
         if "text" in self and "content" not in self:
             warnings.warn("The use of `text` is deprecated and will be removed in a future version. "
                           "Use `content` instead.", DeprecationWarning)
             self["content"] = self["text"]
+        if "role" in self and "category" not in self:
+            warnings.warn("The use of `role` is deprecated and will be removed in a future version. "
+                          "Use `category` instead.", DeprecationWarning)
+            self["category"] = self["role"]
         return self
 
 

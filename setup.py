@@ -29,5 +29,5 @@ setup(
     ],
     packages=['document_model_python'],
     include_package_data=True,
-    install_requires=['pydantic']
+    install_requires=['pydantic>=2.9.0']
 )

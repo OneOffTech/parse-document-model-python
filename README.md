@@ -38,8 +38,9 @@ This extends the `Node` class and can contain other nodes as content. It is used
 This is a leaf node and contains the actual text content:
 
 - `content`: The main text content.
-- `text`: Deprecated field, use `content` instead.
 - `marks`: List of text marks like bold, italic, text style, etc.
+- `text`: Deprecated field, use `content` instead.
+- `role`: Deprecated field, use `category` instead.
 
 ### 4. **Page**
 

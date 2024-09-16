@@ -1,34 +1,54 @@
-from typing import List, Union, TypedDict
+from abc import ABC
+from typing import List, Any, Optional
 
 from pydantic import BaseModel, Field
 
-from document_model_python.marks import Mark, TextStyleMark
+from document_model_python.attributes import Attributes, PageAttributes, LeafAttributes
+from document_model_python.marks import Mark
 
 
-class BoundingBox(TypedDict):
-    min_x: float
-    min_y: float
-    max_x: float
-    max_y: float
-    page: int
+class Node(BaseModel, ABC):
+    """Base element of a document.
+
+    A document is a hierarchy of nodes.
+    Nodes could represent: document, pages, headings, etc.
+    """
+    category: str = Field(
+        title="Node Type",
+        description="The type of node. Examples are: `doc`, `page`, `heading`, `body`, etc. For an exhaustive list "
+                    "refers to the documentation.",
+    )
+    attributes: Optional[Attributes] = Field(
+        title="Node Attributes",
+        description="Attributes related to the node. An example is the reference page."
+    )
+    content: Any = Field(
+        title="Node Content",
+        description="The content of the node. If it is a leaf node this is text, otherwise it could be a list of "
+                    "nodes.",
+    )
 
 
-class ContentAttributes(BaseModel):
-    bounding_box: List[BoundingBox] = []
+class Leaf(Node):
+    """The leaf node of a document.
+
+    That's where the actual text is.
+
+    """
+    attributes: LeafAttributes = LeafAttributes()
+    content: str
+    marks: list[Mark] = []
 
 
-class Content(BaseModel):
-    role: str
-    text: str
-    marks: List[Union[Mark, TextStyleMark]] = []
-    attributes: ContentAttributes = ContentAttributes()
+class Page(Node):
+    """The node that represents a document's page."""
+    category: str = "page"
+    attributes: PageAttributes
+    content = list[Leaf]
 
 
-class NodeAttributes(BaseModel):
-    page: int
-
-
-class Node(BaseModel):
-    category: str
-    attributes: NodeAttributes
-    content: List[Content]
+class Document(Node):
+    """The root node of a document."""
+    category: str = "doc"
+    attributes: Optional[Attributes] = None
+    content: list[Page]

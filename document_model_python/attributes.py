@@ -15,9 +15,13 @@ class Attributes(BaseModel, ABC):
     pass
 
 
+class DocumentAttributes(Attributes):
+    pass
+
+
 class PageAttributes(Attributes):
     page: int
 
 
-class LeafAttributes(Attributes):
+class TextAttributes(Attributes):
     bounding_box: list[BoundingBox] = []

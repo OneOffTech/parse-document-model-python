@@ -1,95 +1,139 @@
-![pypi](https://img.shields.io/pypi/v/document-model-python.svg)
+![pypi](https://img.shields.io/pypi/v/parse-document-model-python.svg)
 [![Pydantic v2](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pydantic/pydantic/main/docs/badge/v2.json)](https://docs.pydantic.dev/latest/contributing/#badges)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-# :card_file_box: Document Model Python
+# Parse Document Model (Python)
 
-**Document Model Python** is a library for representing text documents using a hierarchical model. 
-This library allows you to define documents as a collection of nodes where each node can represent a document, page, 
-text, heading, body, and more.
+**Parse Document Model** (Python) provides Pydantic models for representing text documents using a hierarchical model. 
+This library allows you to define documents as a hierarchy of (specialised) nodes where each node can represent a document, page, text, heading, body, and more.
 
-## 🌟 Key Features
+These models aim to preserve the underlying structure of text documents for further processing, such as creating a table of contents or transforming between formats, e.g. converting a parsed PDF to Markdown.
 
-- **Hierarchical Structure**: The document is modeled as a hierarchy of nodes. Each node could represent a part of the 
-document such as a document itself, pages, text.
-- **Rich Text Support**: Nodes can represent not only the content but also the marks (e.g., bold, italic) applied to 
-the text.
-- **Attributes**: Every node can have attributes that provide additional information such as page number, 
+- **Hierarchical structure**: The document is modelled as a hierarchy of nodes. Each node can represent a part of the 
+document itself, pages, text.
+- **Rich text support**: Nodes can represent not only the content but also the formatting (e.g. bold, italic) applied to the text. 
+- **Attributes**: Each node can have attributes that provide additional information such as page number, 
 bounding box, etc.
-- **Easy-to-use**: Built with [`Pydantic`](https://docs.pydantic.dev/latest/), ensures type validation and effortless 
-creation of complex document structures.
+- **Built-in validation and types**: Built with [`Pydantic`](https://docs.pydantic.dev/latest/), ensuring type safety, validation and effortless creation of complex document structures.
 
-## 📚 Structure Overview
 
-### 1. **Node** (Base Class)
+**Requirements**
 
-The base element of the document is a `Node`. This is the abstract class from which all other nodes inherit. 
+- Python 3.12 or above (Python 3.9, 3.10 and 3.11 are supported on best-effort).
+
+
+**Next steps**
+
+- [Explore the document model](#document-model-overview)
+- [Install the library and use the models](#getting-started)
+
+
+## Document Model Overview
+
+We want to represent the document structure using a hierarchy so that the inherited structure is preserved when chapters, sections and headings are used. Consider a generic document with two pages, one heading per page and one paragraph of text. The resulting representation might be the following.
+
+```
+Document
+ ├─Page
+ │  ├─Text (category: heading)
+ │  └─Text (category: body)
+ └─Page
+    ├─Text (category: heading)
+    └─Text (category: body)
+```
+
+At a glance you can see the structure, the document is composed of two pages and there are two headings. To do so we defined a hierarchy around the concept of a Node, like a node in a graph.
+
+### Node types
+
+```mermaid
+classDiagram
+    class Node
+    Node <|-- StructuredNode
+    Node <|-- Text
+    StructuredNode <|-- Document
+    StructuredNode <|-- Page
+```
+
+
+#### 1. **Node** (Base Class)
+
+This is the abstract class from which all other nodes inherit. 
+
 Each node has:
+
 - `category`: The type of the node (e.g., `doc`, `page`, `heading`).
-- `attributes`: Optional field to attach extra data to a node.
+- `attributes`: Optional field to attach extra data to a node. See [Attributes](#attributes).
 
-### 2. **StructuredNode**
+#### 2. **StructuredNode**
 
-This extends the `Node` class and can contain other nodes as content. It is used for non-leaf nodes like 
-`Document` and `Page`.
+This extends the [`Node`](#1-node-base-class). It is used to represent the hierarchy as a node whose content is a list of other nodes, such as like [`Document`](#3-document) and [`Page`](#4-page).
 
-### 3. **Text**
+- `content`: List of `Node`.
 
-This is a leaf node and contains the actual text content:
 
-- `content`: The main text content.
-- `marks`: List of text marks like bold, italic, text style, etc.
-- `text`: Deprecated field, use `content` instead.
-- `role`: Deprecated field, use `category` instead.
+#### 3. **Document**
 
-### 4. **Page**
+This is the root node of a document.
+
+- `category`: Always set to `"doc"`.
+- `attributes`: Document-wide attributes can be set here.
+- `content`: List of [`Page`](#4-page) nodes that form the document.
+
+#### 4. **Page**
 
 Represents a page in the document:
 
 - `category`: Always set to `"page"`.
 - `attributes`: Can contain metadata like page number.
-- `content`: List of `Text` nodes on the page.
+- `content`: List of [`Text`](#5-text) nodes on the page.
 
-### 5. **Document**
+#### 5. **Text**
 
-This is the root node of the document:
+This node represent a paragraph, a heading or any text within the document.
 
-- `category`: Always set to `"doc"`.
-- `attributes`: Document-wide attributes can be set here.
-- `content`: List of `Page` nodes that form the document.
+- `category`: The type `"doc"`.
+- `content`: A string representing the textual content.
+- `marks`: List of [marks](#marks) applied to the text, such as bold, italic, etc.
+- `attributes`: Can contain metadata like the bounding box representing where this portion of text is located in the page.
 
-## 🖋️ Marks
 
-Marks are used to style or add functionality to the text inside a `Text` node. 
-For example, bold text, italic text, links, and custom styles like font or color.
 
-### **Mark Types**
+### Marks
 
-- **Bold**: Represents bold text.
-- **Italic**: Represents italic text.
-- **TextStyle**: Allows customization of font and color.
-- **Link**: Represents a hyperlink.
+Marks are used to add style or functionality to the text within a [`Text`](#5-text) node. 
+For example, bold text, italic text, links and custom styles such as font or colour.
+
+**Mark Types**
+
+- `Bold`: Represents bold text.
+- `Italic`: Represents italic text.
+- `TextStyle`: Allows customization of font and color.
+- `Link`: Represents a hyperlink.
 
 Marks are validated and enforced with the help of `Pydantic` model validators.
 
-## 🧩 Attributes
+### Attributes
 
-Attributes are optional fields that can store extra information for each node. Some predefined attributes include:
+Attributes are optional fields that can store additional information for each node. Some predefined attributes are:
 
+- `DocumentAttributes`: General attributes for the document (currently reserved for the future).
+- `PageAttributes`: Specific page related attributes, such as the page number.
+- `TextAttributes`: Text related attributes, such as bounding boxes.
 - `BoundingBox`: A box that specifies the position of a text in the page.
-- `DocumentAttributes`: General attributes for the document.
-- `PageAttributes`: Specific attributes like page number for the page.
-- `TextAttributes`: Attributes such as bounding boxes for the text.
 
-## 🏗️ Installation
 
-The library `document-model-python` is distributed with PyPI, and you can easily install it with `pip`:
+## Getting started
+
+### Installation
+
+Parse Document Model is distributed with PyPI. You can install it with `pip`.
 
 ```bash
-pip install document-model-python
+pip install parse-document-model-python
 ```
 
-## 🚀 Quick Example
+### Quick Example
 
 Here’s how you can represent a simple document with one page and some text:
 
@@ -104,7 +148,7 @@ doc = Document(
             content=[
                 Text(
                     category="heading",
-                    content="Welcome to document-model-python",
+                    content="Welcome to parse-document-model-python",
                     marks=["bold"]
                 ),
                 Text(
@@ -117,10 +161,49 @@ doc = Document(
 )
 ```
 
-## 💡 Contributing
+## Testing
 
-Feel free to submit issues or contribute to the development of this library. We appreciate your feedback!
+Parse Document Model is tested using [pytest](https://docs.pytest.org/en/stable/). Tests run for each commit and pull request.
 
-## 📜 License
+Install the dependencies.
 
-This project is licensed under the MIT License.
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
+```
+
+Execute the test suite.
+
+```bash
+pytest
+```
+
+
+## Contributing
+
+Thank you for considering contributing to the Parse Document Model! The contribution guide can be found in the [CONTRIBUTING.md](./.github/CONTRIBUTING.md) file.
+
+> [NOTE]
+> Consider opening a [discussion](https://github.com/OneOffTech/parse-document-model-python/discussions) before submitting a pull request with changes to the model structures.
+
+## Security Vulnerabilities
+
+Please review [our security policy](./.github/SECURITY.md) on how to report security vulnerabilities.
+
+## Credits
+
+- [OneOffTech](https://github.com/OneOffTech)
+- [All Contributors](../../contributors)
+
+## Supporters
+
+The project is provided and supported by [OneOff-Tech (UG)](https://oneofftech.de).
+
+<p align="left"><a href="https://oneofftech.de" target="_blank"><img src="https://raw.githubusercontent.com/OneOffTech/.github/main/art/oneofftech-logo.svg" width="200"></a></p>
+
+## Aknowledgements
+
+The format and structure takes inspiration from [ProseMirror](https://prosemirror.net/docs/ref/#model.Document_Schema).
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

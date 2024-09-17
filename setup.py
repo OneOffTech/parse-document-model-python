@@ -11,15 +11,15 @@ with open(path.join(ROOT, 'README.md'), encoding='utf-8') as f:
 setup(
     name='document-model-python',
     version='0.1.0',
-    description='Define the pydantic models for a text document.',
+    description='Pydantic models for representing a text document as a hierarchical structure.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='OneOffTech',
-    author_email='info@oneofftech.de',
+    author_email='info@oneofftech.xyz',
     license='MIT',
-    url='https://github.com/OneOffTech/document-model-python',
+    url='https://github.com/OneOffTech/parse-document-model-python',
     project_urls={
-        'Source': 'https://github.com/OneOffTech/document-model-python',
+        'Source': 'https://github.com/OneOffTech/parse-document-model-python',
     },
     classifiers=[
         'Intended Audience :: Developers',

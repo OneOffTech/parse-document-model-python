@@ -39,7 +39,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: parse_model_release
-        path: build/*
+        path: dist/*
 
   pypi-publish:
     name: Upload release to PyPI
@@ -53,15 +53,15 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: parse_model_release
-          path: build
+          path: dist
       
       - name: Display structure of downloaded files
-        run: ls -R build
+        run: ls -R dist
 
-      # - name: Publish package distributions to PyPI
-      #   uses: pypa/gh-action-pypi-publish@release/v1
-      #   # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-      #   with:
-      #     repository-url: https://test.pypi.org/legacy/
-      #     print-hash: true
-      #     verbose: true
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          print-hash: true
+          verbose: true

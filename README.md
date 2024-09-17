@@ -1,4 +1,4 @@
-![pypi](https://img.shields.io/pypi/v/parse-document-model-python.svg)
+![pypi](https://img.shields.io/pypi/v/parse-document-model.svg)
 [![Pydantic v2](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pydantic/pydantic/main/docs/badge/v2.json)](https://docs.pydantic.dev/latest/contributing/#badges)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -130,7 +130,7 @@ Attributes are optional fields that can store additional information for each no
 Parse Document Model is distributed with PyPI. You can install it with `pip`.
 
 ```bash
-pip install parse-document-model-python
+pip install parse-document-model
 ```
 
 ### Quick Example
@@ -148,7 +148,7 @@ doc = Document(
             content=[
                 Text(
                     category="heading",
-                    content="Welcome to parse-document-model-python",
+                    content="Welcome to parse-document-model",
                     marks=["bold"]
                 ),
                 Text(

@@ -10,7 +10,7 @@ with open(path.join(ROOT, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='parse-document-model',
-    version='0.1.0',
+    version='0.0.1',
     description='Pydantic models for representing a text document as a hierarchical structure.',
     long_description=long_description,
     long_description_content_type='text/markdown',

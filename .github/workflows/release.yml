@@ -39,6 +39,8 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: parse_model_release
+        if-no-files-found: error
+        retention-days: 1
         path: dist/*
 
   pypi-publish:
@@ -54,14 +56,9 @@ jobs:
         with:
           name: parse_model_release
           path: dist
-      
-      - name: Display structure of downloaded files
-        run: ls -R dist
 
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         with:
-          repository-url: https://test.pypi.org/legacy/
           print-hash: true
-          verbose: true

@@ -75,14 +75,14 @@ class Text(Node):
         return self
 
 
-class Page(Node):
+class Page(StructuredNode):
     """The node that represents a document's page."""
     category: str = "page"
     attributes: Optional[PageAttributes] = None
     content: list[Text]
 
 
-class Document(Node):
+class Document(StructuredNode):
     """The root node of a document."""
     category: str = "doc"
     attributes: Optional[DocumentAttributes] = None

@@ -9,7 +9,7 @@ with open(path.join(ROOT, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='document-model-python',
+    name='parse-document-model',
     version='0.1.0',
     description='Pydantic models for representing a text document as a hierarchical structure.',
     long_description=long_description,

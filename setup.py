@@ -27,7 +27,7 @@ setup(
         'Programming Language :: Python',
         'Operating System :: OS Independent'
     ],
-    packages=['document_model_python'],
+    packages=['parse_document_model'],
     include_package_data=True,
     install_requires=['pydantic>=2.9.0']
 )

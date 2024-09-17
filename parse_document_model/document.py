@@ -1,11 +1,11 @@
 import warnings
 from abc import ABC
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from pydantic import BaseModel, Field, model_validator
 
-from document_model_python.attributes import Attributes, PageAttributes, TextAttributes, DocumentAttributes
-from document_model_python.marks import Mark
+from parse_document_model.attributes import Attributes, PageAttributes, TextAttributes, DocumentAttributes
+from parse_document_model.marks import Mark, TextStyleMark, UrlMark
 
 
 class Node(BaseModel, ABC):
@@ -48,7 +48,7 @@ class Text(Node):
         title="Content",
         description="The new field to hold the text content."
     )
-    marks: list[Mark] = []
+    marks: list[Union[Mark, TextStyleMark, UrlMark]] = []
     text: Optional[str] = Field(
         None,
         title="Text",
@@ -79,7 +79,7 @@ class Page(Node):
     """The node that represents a document's page."""
     category: str = "page"
     attributes: Optional[PageAttributes] = None
-    content = list[Text]
+    content: list[Text]
 
 
 class Document(Node):

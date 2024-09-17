@@ -22,7 +22,7 @@ class Mark(BaseModel):
 
     @model_validator(mode='before')
     def check_details(self: Any) -> Any:
-        mark_type = self.get('type')
+        mark_type = self.get('category')
 
         if mark_type == 'textStyle':
             if 'color' not in self and 'font' not in self:

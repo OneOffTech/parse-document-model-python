@@ -29,5 +29,6 @@ setup(
     ],
     packages=['parse_document_model'],
     include_package_data=True,
+    python_requires=">=3.9",
     install_requires=['pydantic>=2.9.0']
 )

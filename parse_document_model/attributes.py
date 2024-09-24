@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Optional
 
-from pydantic import BaseModel, Field, validator, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class BoundingBox(BaseModel):

@@ -1,7 +1,6 @@
 import json
 
 import pytest
-import pydantic
 
 from parse_document_model import Document, Page
 from parse_document_model.attributes import PageAttributes, TextAttributes

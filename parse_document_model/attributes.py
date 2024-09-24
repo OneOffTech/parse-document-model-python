@@ -1,6 +1,7 @@
 from abc import ABC
+from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class BoundingBox(BaseModel):
@@ -25,3 +26,4 @@ class PageAttributes(Attributes):
 
 class TextAttributes(Attributes):
     bounding_box: list[BoundingBox] = []
+    level: Optional[int] = Field(None, ge=1, le=4)

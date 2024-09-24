@@ -92,37 +92,37 @@ Represents a page in the document:
 
 This node represent a paragraph, a heading or any text within the document.
 
-- `category`: The classification of the text within the document.
+- `category`: The [category](#category) of the text within the document, e.g. `heading`, `title`
 - `content`: A string representing the textual content.
 - `marks`: List of [marks](#marks) applied to the text, such as bold, italic, etc.
 - `attributes`: Can contain metadata like the bounding box representing where this portion of text is located in the page.
 
 ### Category 
-Below are the various categories of text that may be found within a document:
 
-**Category Type**
-- `page-header`: Represents the header of the page.
-- `footer`: Represents the footer of the page.
-- `heading`: Any heading within the document.
-- `figure`: Represents a figure or an image.
-- `other`: Any other unclassified text.
-- `appendix`: Text within an appendix.
-- `keywords`: List of keywords.
-- `acknowledgments`: Section acknowledging contributors.
-- `caption`: Caption associated with a figure or table.
-- `toc`: Table of contents.
+Each block of text is assigned a _category_.
+
 - `abstract`: The abstract of the document.
-- `footnote`: Text at the bottom of the page providing additional information.
-- `body`: Main body text of the document.
-- `itemize-item`: Item in a list or bullet point.
-- `title`: The title of the document.
-- `reference`: References or citations within the document.
+- `acknowledgments`: Section acknowledging contributors.
 - `affiliation`: Author's institutional affiliation.
-- `general-terms`: General terms section.
-- `formula`: Mathematical formula or equation.
-- `categories`: Categories or topics listed in the document.
-- `table`: Represents a table.
+- `appendix`: Text within an appendix.
 - `authors`: List of authors.
+- `body`: Main body text of the document.
+- `caption`: Caption associated with a figure or table.
+- `categories`: Categories or topics listed in the document.
+- `figure`: Represents a figure or an image.
+- `footer`: Represents the footer of the page.
+- `footnote`: Text at the bottom of the page providing additional information.
+- `formula`: Mathematical formula or equation.
+- `general-terms`: General terms section.
+- `heading`: Any heading within the document.
+- `keywords`: List of keywords.
+- `itemize-item`: Item in a list or bullet point.
+- `other`: Any other unclassified text.
+- `page-header`: Represents the header of the page.
+- `reference`: References or citations within the document.
+- `table`: Represents a table.
+- `title`: The title of the document.
+- `toc`: Table of contents.
 
 ### Marks
 

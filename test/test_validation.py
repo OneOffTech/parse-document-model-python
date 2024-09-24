@@ -1,6 +1,7 @@
 import json
 
 import pytest
+import pydantic
 
 from parse_document_model import Document, Page
 from parse_document_model.attributes import PageAttributes, TextAttributes
@@ -66,3 +67,36 @@ def test_url_marks():
         else:
             with pytest.raises(ValueError):
                 UrlMark(**mark_json)
+
+
+def test_text_attributes_level():
+    valid_text_attributes = [
+        {"bounding_box": [], "level": 1},
+        {"bounding_box": [], "level": 2},
+        {"bounding_box": [], "level": 3},
+        {"bounding_box": [], "level": 4},
+        {"bounding_box": [], "level": None},
+        {"bounding_box": []},
+        {}
+    ]
+
+    for attributes_json in valid_text_attributes:
+        text_attributes = TextAttributes(**attributes_json)
+        assert isinstance(text_attributes, TextAttributes)
+        assert isinstance(text_attributes.level, (int, type(None)))
+        if text_attributes.level is not None:
+            assert text_attributes.level in range(1, 5)
+            assert attributes_json["level"] == text_attributes.level
+        else:
+            assert "level" not in attributes_json or attributes_json["level"] is None
+
+    invalid_text_attributes = [
+        {"bounding_box": [], "level": -1},
+        {"bounding_box": [], "level": "invalid"},
+        {"bounding_box": [], "level": 2.5},
+        {"bounding_box": [], "level": 5},
+    ]
+
+    for attributes_json in invalid_text_attributes:
+        with pytest.raises(ValueError):
+            TextAttributes(**attributes_json)

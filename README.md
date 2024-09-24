@@ -92,12 +92,37 @@ Represents a page in the document:
 
 This node represent a paragraph, a heading or any text within the document.
 
-- `category`: The type `"doc"`.
+- `category`: The classification of the text within the document.
 - `content`: A string representing the textual content.
 - `marks`: List of [marks](#marks) applied to the text, such as bold, italic, etc.
 - `attributes`: Can contain metadata like the bounding box representing where this portion of text is located in the page.
 
+### Category 
+Below are the various categories of text that may be found within a document:
 
+**Category Type**
+- `page-header`: Represents the header of the page.
+- `footer`: Represents the footer of the page.
+- `heading`: Any heading within the document.
+- `figure`: Represents a figure or an image.
+- `other`: Any other unclassified text.
+- `appendix`: Text within an appendix.
+- `keywords`: List of keywords.
+- `acknowledgments`: Section acknowledging contributors.
+- `caption`: Caption associated with a figure or table.
+- `toc`: Table of contents.
+- `abstract`: The abstract of the document.
+- `footnote`: Text at the bottom of the page providing additional information.
+- `body`: Main body text of the document.
+- `itemize-item`: Item in a list or bullet point.
+- `title`: The title of the document.
+- `reference`: References or citations within the document.
+- `affiliation`: Author's institutional affiliation.
+- `general-terms`: General terms section.
+- `formula`: Mathematical formula or equation.
+- `categories`: Categories or topics listed in the document.
+- `table`: Represents a table.
+- `authors`: List of authors.
 
 ### Marks
 
@@ -119,8 +144,9 @@ Attributes are optional fields that can store additional information for each no
 
 - `DocumentAttributes`: General attributes for the document (currently reserved for the future).
 - `PageAttributes`: Specific page related attributes, such as the page number.
-- `TextAttributes`: Text related attributes, such as bounding boxes.
+- `TextAttributes`: Text related attributes, such as bounding boxes or level.
 - `BoundingBox`: A box that specifies the position of a text in the page.
+- `Level`: The specific level of the text within a document, for example, for headings.
 
 
 ## Getting started

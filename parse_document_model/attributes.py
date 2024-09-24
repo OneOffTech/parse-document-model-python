@@ -26,11 +26,4 @@ class PageAttributes(Attributes):
 
 class TextAttributes(Attributes):
     bounding_box: list[BoundingBox] = []
-    level: Optional[int] = Field(None, gw=1, le=4)
-
-    @field_validator('level')
-    @classmethod
-    def check_level(cls, v) -> int:
-        if v is not None and v not in range(1, 5):
-            raise ValueError("Level must be between 1 and 4 or None")
-        return v
+    level: Optional[int] = Field(None, ge=1, le=4)

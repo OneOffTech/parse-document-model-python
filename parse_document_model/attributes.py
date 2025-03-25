@@ -27,3 +27,4 @@ class PageAttributes(Attributes):
 class TextAttributes(Attributes):
     bounding_box: list[BoundingBox] = []
     level: Optional[int] = Field(None, ge=1, le=4)
+    section: Optional[str] = None
